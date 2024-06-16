@@ -197,7 +197,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n        \"employeeIds\": [1, 2],\n        \"petIds\": [1, 2],\n        \"date\": \"2019-12-15\",\n        \"activities\": [\"WALKING\", \"SHAVING\"]\n    }",
+					"raw": "{\n        \"employeeIds\": [1],\n        \"petIds\": [1],\n        \"date\": \"2019-12-15\",\n        \"activities\": [\"WALKING\", \"SHAVING\"]\n    }",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -302,7 +302,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8082/schedule/employee/2",
+					"raw": "http://localhost:8082/schedule/employee/1",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -311,7 +311,7 @@
 					"path": [
 						"schedule",
 						"employee",
-						"2"
+						"1"
 					]
 				}
 			},
@@ -342,7 +342,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8082/schedule/customer/2",
+					"raw": "http://localhost:8082/schedule/customer/1",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -351,7 +351,7 @@
 					"path": [
 						"schedule",
 						"customer",
-						"2"
+						"1"
 					]
 				}
 			},
