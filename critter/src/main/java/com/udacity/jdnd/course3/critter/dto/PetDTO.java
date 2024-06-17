@@ -1,5 +1,6 @@
 package com.udacity.jdnd.course3.critter.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.udacity.jdnd.course3.critter.classify.PetType;
 
 import java.time.LocalDate;
@@ -13,6 +14,7 @@ public class PetDTO {
     private PetType type;
     private String name;
     private long ownerId;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate birthDate;
     private String notes;
 

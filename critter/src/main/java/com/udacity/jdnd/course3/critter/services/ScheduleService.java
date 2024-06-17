@@ -1,7 +1,7 @@
 package com.udacity.jdnd.course3.critter.services;
 
 
-import com.udacity.jdnd.course3.critter.Exception.ScheduleNotFoundException;
+import com.udacity.jdnd.course3.critter.Exception.NotFoundException;
 import com.udacity.jdnd.course3.critter.entity.Schedule;
 import com.udacity.jdnd.course3.critter.repository.ScheduleRepository;
 import lombok.AllArgsConstructor;
@@ -23,19 +23,19 @@ public class ScheduleService {
     }
     public Schedule findScheduleById(long id) {
         return scheduleRepository.findById(id)
-                .orElseThrow(() -> new ScheduleNotFoundException("Schedule is not found with ID: " + id));
+                .orElseThrow(() -> new NotFoundException("Schedule is not found with ID: " + id));
     }
     public List<Schedule> findByEmployeesId(Long employeeId) {
         List<Schedule> schedules = scheduleRepository.getScheduleByEmployees_Id(employeeId);
         if (schedules == null || schedules.isEmpty()) {
-            throw new ScheduleNotFoundException("No schedules found for employee ID: " + employeeId);
+            throw new NotFoundException("No schedules found for employee ID: " + employeeId);
         }
         return schedules;
     }
     public List<Schedule> findByPetsId(Long petId) {
         List<Schedule> schedules = scheduleRepository.getScheduleByPets_Id(petId);
         if (schedules == null || schedules.isEmpty()) {
-            throw new ScheduleNotFoundException("No schedules found for Pet ID: " + petId);
+            throw new NotFoundException("No schedules found for Pet ID: " + petId);
         }
         return schedules;
     }

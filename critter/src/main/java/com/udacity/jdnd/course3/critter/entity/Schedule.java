@@ -27,7 +27,7 @@ public class Schedule {
     @ManyToMany
     private List<Employee> employees = new ArrayList<>();
 
-//    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss[.SSS][.SS][.S]")
+    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate date;
 
     @ElementCollection(targetClass = EmployeeSkill.class)

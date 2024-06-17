@@ -1,7 +1,6 @@
 package com.udacity.jdnd.course3.critter.controller;
 
-import com.udacity.jdnd.course3.critter.Exception.CustomerNotFoundException;
-import com.udacity.jdnd.course3.critter.Exception.PetNotFoundException;
+import com.udacity.jdnd.course3.critter.Exception.NotFoundException;
 import com.udacity.jdnd.course3.critter.dto.PetDTO;
 import com.udacity.jdnd.course3.critter.entity.Customer;
 import com.udacity.jdnd.course3.critter.entity.Pet;
@@ -37,7 +36,7 @@ public class PetController {
     public PetDTO getPet(@PathVariable long petId) {
         Pet pet = petService.getPetById(petId);
         if (pet == null) {
-            throw new PetNotFoundException("Pet not found with ID: " + petId);
+            throw new NotFoundException("Pet not found with ID: " + petId);
         }
         return convertDtoService.convertPetToDTO(pet);
     }
@@ -46,6 +45,9 @@ public class PetController {
     public List<PetDTO> getAllPets(){
         List<PetDTO> petsDTO = new ArrayList<>();
         List<Pet> pets = this.petService.getAllPets();
+        if (pets == null || pets.isEmpty()) {
+            throw new NotFoundException("No pets found.");
+        }
         for(Pet pet:pets){
             petsDTO.add(convertDtoService.convertPetToDTO(pet));
         }
@@ -56,7 +58,7 @@ public class PetController {
     public List<PetDTO> getPetsByOwner(@PathVariable long ownerId) {
         Customer customer = customerService.findCustomerById(ownerId);
         if (customer == null || customer.getPets() == null) {
-            throw new CustomerNotFoundException("Customer or pets not found for ownerId: " + ownerId);
+            throw new NotFoundException("Customer or pets not found for ownerId: " + ownerId);
         }
         return customer.getPets().stream()
                 .map(convertDtoService::convertPetToDTO)

@@ -1,6 +1,6 @@
 package com.udacity.jdnd.course3.critter.controller;
 
-import com.udacity.jdnd.course3.critter.Exception.ScheduleNotFoundException;
+import com.udacity.jdnd.course3.critter.Exception.NotFoundException;
 import com.udacity.jdnd.course3.critter.dto.ScheduleDTO;
 import com.udacity.jdnd.course3.critter.entity.Customer;
 import com.udacity.jdnd.course3.critter.entity.Pet;
@@ -9,8 +9,6 @@ import com.udacity.jdnd.course3.critter.repository.ScheduleRepository;
 import com.udacity.jdnd.course3.critter.services.ConvertDtoService;
 import com.udacity.jdnd.course3.critter.services.CustomerService;
 import com.udacity.jdnd.course3.critter.services.ScheduleService;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -43,21 +41,17 @@ public class ScheduleController {
     @GetMapping
     public List<ScheduleDTO> getAllSchedules() {
         List<Schedule> schedules = scheduleService.findAllSchedule();
+        if (schedules == null || schedules.isEmpty()) {
+            throw new NotFoundException("Not found any schedule");
+        }
         return convertDtoService.convertListScheduleToDTO(schedules);
     }
 
     @GetMapping("/pet/{petId}")
-//    public List<ScheduleDTO> findSchedulesByPetsId(@PathVariable Long petId) {
-//        List<Schedule> schedules = scheduleService.findByPetsId(petId);
-//        if (schedules == null || schedules.isEmpty()) {
-//            throw new ScheduleNotFoundException("No schedules found for pet ID: " + petId);
-//        }
-//        return convertDtoService.convertListScheduleToDTO(schedules);
-//    }
     public List<ScheduleDTO> findSchedulesByPetsId(@PathVariable Long petId) {
         List<Schedule> schedules = scheduleService.findByPetsId(petId);
         if (schedules == null || schedules.isEmpty()) {
-            throw new ScheduleNotFoundException("No schedules found for pet ID: " + petId);
+            throw new NotFoundException("No schedules found for pet ID: " + petId);
         }
         List<ScheduleDTO> scheduleDTOs = new ArrayList<>();
         for (Schedule schedule : schedules) {
@@ -70,7 +64,7 @@ public class ScheduleController {
     public List<ScheduleDTO> getScheduleForEmployee(@PathVariable long employeeId) {
         List<Schedule> schedules = scheduleService.findByEmployeesId(employeeId);
         if (schedules == null || schedules.isEmpty()) {
-            throw new ScheduleNotFoundException("No schedules found for employee ID: " + employeeId);
+            throw new NotFoundException("No schedules found for employee ID: " + employeeId);
         }
         return convertDtoService.convertListScheduleToDTO(schedules);
     }

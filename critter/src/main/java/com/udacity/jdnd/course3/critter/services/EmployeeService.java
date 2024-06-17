@@ -1,8 +1,6 @@
 package com.udacity.jdnd.course3.critter.services;
 
-import com.udacity.jdnd.course3.critter.Exception.CustomerNotFoundException;
-import com.udacity.jdnd.course3.critter.Exception.EmployeeNotFoundException;
-import com.udacity.jdnd.course3.critter.entity.Customer;
+import com.udacity.jdnd.course3.critter.Exception.NotFoundException;
 import com.udacity.jdnd.course3.critter.entity.Employee;
 import com.udacity.jdnd.course3.critter.repository.EmployeeRepository;
 import lombok.AllArgsConstructor;
@@ -19,7 +17,7 @@ import java.util.Set;
 public class EmployeeService {
     private final EmployeeRepository employeeRepository;
     public Employee getEmployeeById(Long id) {
-        return employeeRepository.findById(id).orElseThrow(() -> new EmployeeNotFoundException("Not found employee with id " + id));
+        return employeeRepository.findById(id).orElseThrow(() -> new NotFoundException("Not found employee with id " + id));
     }
     public void updateDayAvailable(Set<DayOfWeek> daysAvailable, Long id){
         Employee employee = this.getEmployeeById(id);

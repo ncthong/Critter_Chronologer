@@ -1,5 +1,6 @@
 package com.udacity.jdnd.course3.critter.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.udacity.jdnd.course3.critter.classify.EmployeeSkill;
 
 import java.time.LocalDate;
@@ -14,6 +15,7 @@ public class ScheduleDTO {
     private long id;
     private List<Long> employeeIds;
     private List<Long> petIds;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate date;
     private Set<EmployeeSkill> activities;
 

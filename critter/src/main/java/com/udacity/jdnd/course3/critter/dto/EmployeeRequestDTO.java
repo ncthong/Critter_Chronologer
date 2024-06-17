@@ -1,5 +1,6 @@
 package com.udacity.jdnd.course3.critter.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.udacity.jdnd.course3.critter.classify.EmployeeSkill;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,6 +15,8 @@ import java.util.Set;
 @Getter @Setter
 public class EmployeeRequestDTO {
     private Set<EmployeeSkill> skills;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate date;
 
 }

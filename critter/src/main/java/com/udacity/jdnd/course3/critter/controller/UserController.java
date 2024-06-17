@@ -1,7 +1,6 @@
 package com.udacity.jdnd.course3.critter.controller;
 
-import com.udacity.jdnd.course3.critter.Exception.EmployeeNotFoundException;
-import com.udacity.jdnd.course3.critter.Exception.PetNotFoundException;
+import com.udacity.jdnd.course3.critter.Exception.NotFoundException;
 import com.udacity.jdnd.course3.critter.classify.EmployeeSkill;
 import com.udacity.jdnd.course3.critter.dto.CustomerDTO;
 import com.udacity.jdnd.course3.critter.dto.EmployeeDTO;
@@ -14,12 +13,9 @@ import com.udacity.jdnd.course3.critter.services.CustomerService;
 import com.udacity.jdnd.course3.critter.services.EmployeeService;
 import com.udacity.jdnd.course3.critter.services.PetService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.DayOfWeek;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -50,16 +46,11 @@ public class UserController {
     }
 
     @GetMapping("/customer")
-//    public List<CustomerDTO> getAllCustomers(){
-//        List<CustomerDTO> customerDTOS = new ArrayList<>();
-//        List<Customer> customers = this.customerService.findAllCustomer();
-//        for(Customer customer:customers){
-//            customerDTOS.add(convertCustomerToDTO(customer));
-//        }
-//        return customerDTOS;
-//    }
     public List<CustomerDTO> getAllCustomers() {
         List<Customer> customers = customerService.findAllCustomer();
+        if (customers == null || customers.isEmpty()) {
+            throw new NotFoundException("Not found any customer.");
+        }
         return customers.stream()
                 .map(convertDtoService::convertCustomerToDTO)
                 .collect(Collectors.toList());
@@ -69,7 +60,7 @@ public class UserController {
     public CustomerDTO getOwnerByPet(@PathVariable long petId) {
         Pet pet = petService.getPetById(petId);
         if (pet == null || pet.getCustomer() == null) {
-            throw new PetNotFoundException("Pet or Customer not found for petId: " + petId);
+            throw new NotFoundException("Pet or Customer not found for petId: " + petId);
         }
         return convertDtoService.convertCustomerToDTO(pet.getCustomer());
     }
@@ -85,7 +76,7 @@ public class UserController {
     public EmployeeDTO getEmployee(@PathVariable long employeeId) {
         Employee employee = employeeService.getEmployeeById(employeeId);
         if (employee == null) {
-            throw new EmployeeNotFoundException("Employee not found with ID: " + employeeId);
+            throw new NotFoundException("Employee not found with ID: " + employeeId);
         }
         return convertDtoService.convertEmployeeToDTO(employee);
     }
@@ -93,7 +84,7 @@ public class UserController {
     @PutMapping("/employee/availability/{employeeId}")
     public void setAvailability(@RequestBody Set<DayOfWeek> daysAvailable, @PathVariable long employeeId) {
         if (employeeService.getEmployeeById(employeeId) == null) {
-            throw new EmployeeNotFoundException("Employee not found with ID: " + employeeId);
+            throw new NotFoundException("Employee not found with ID: " + employeeId);
         }
         employeeService.updateDayAvailable(daysAvailable, employeeId);
     }
@@ -104,6 +95,9 @@ public class UserController {
         DayOfWeek daysAvailable = employeeRequestDTO.getDate().getDayOfWeek();
         List<Employee> employees = employeeService.findByDaysAvailable(daysAvailable);
 
+        if (employees == null || employees.isEmpty()) {
+            throw new NotFoundException("Not employee or days availability");
+        }
         return employees.stream()
                 .filter(employee -> employee.getSkills().containsAll(employeeSkills))
                 .map(convertDtoService::convertEmployeeToDTO)

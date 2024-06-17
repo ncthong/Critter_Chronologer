@@ -1,5 +1,6 @@
 package com.udacity.jdnd.course3.critter.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.udacity.jdnd.course3.critter.classify.PetType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,6 +26,8 @@ public class Pet {
     @ManyToOne
     private Customer customer;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate birthDate;
+
     private String notes;
 }
